@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+      // GitHub Pages SPA redirect solution
+      // When a user navigates directly to a route (e.g., /project/123),
+      // GitHub Pages serves this 404.html. We store the intended path
+      // and redirect to index.html, which will handle the routing.
+      sessionStorage.setItem('redirect', location.pathname + location.search + location.hash);
+    </script>
+    <meta http-equiv="refresh" content="0;URL='/'">
+  </head>
+  <body>
+    <p>Redirecting to app...</p>
+  </body>
+</html>

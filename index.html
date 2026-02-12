@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/strwbcdy/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+    <script>
+      // GitHub Pages SPA redirect handler
+      // This script runs before React loads and restores the intended route
+      // that was stored by 404.html when a user directly accessed a route
+      (function() {
+        var redirect = sessionStorage.getItem('redirect');
+        sessionStorage.removeItem('redirect');
+        if (redirect && redirect !== location.pathname) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/strwbcdy/assets/index-KdAvSgV3.js"></script>
+    <link rel="stylesheet" crossorigin href="/strwbcdy/assets/index-DzAUYs_q.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
