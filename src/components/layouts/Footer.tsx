@@ -27,14 +27,14 @@ export default function Footer() {
         }}
       >
         <Typography color="grey.700" variant="h6" component="span">
-          Developed in{" "}
+          Developed by{" "}
           <Link
             target="_blank"
             underline="none"
             sx={{ color: "text.primary" }}
             href="https://github.com/crazy-man22"
           >
-            2026
+            Lily
           </Link>
         </Typography>
       </Divider>

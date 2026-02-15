@@ -1,4 +1,5 @@
 import { forwardRef, useCallback, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -171,57 +172,71 @@ export default function DetailModal() {
                 px: { xs: 2, sm: 3, md: 5 },
               }}
             >
-              <Typography
-                variant="h4"
-                sx={{
-                  fontSize: "2rem",
-                  fontWeight: 700,
-                  color: "white",
-                  mb: 2,
-                }}
+              <Box
+                component={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
               >
-                {item.title}
-              </Typography>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontSize: "2rem",
+                    fontWeight: 700,
+                    color: "white",
+                    mb: 2,
+                  }}
+                >
+                  {item.title}
+                </Typography>
+              </Box>
 
-              <Stack direction="row" spacing={2} sx={{ mb: 3, alignItems: "center" }}>
-                {item.link && (
-                  <IconButton
-                    component="a"
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{
-                      bgcolor: "white",
-                      color: "black",
-                      px: 2,
-                      py: 1,
-                      borderRadius: "4px",
-                      fontWeight: 700,
-                      textTransform: "none",
-                      transition: "opacity 0.2s ease",
-                      "&:hover": {
+              <Box
+                component={motion.div}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                <Stack direction="row" spacing={2} sx={{ mb: 3, alignItems: "center" }}>
+                  {item.link && (
+                    <IconButton
+                      component="a"
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      sx={{
                         bgcolor: "white",
-                        opacity: 0.8,
-                      },
-                    }}
-                  >
-                    <OpenInNewIcon sx={{ mr: 1, fontSize: 20 }} />
-                    <Typography variant="button" sx={{ fontWeight: 700 }}>
-                      View Project
-                    </Typography>
-                  </IconButton>
-                )}
-                <Box flexGrow={1} />
-                {item.videoUrl && (
-                  <NetflixIconButton
-                    size="large"
-                    onClick={() => handleMute(muted)}
-                    sx={{ zIndex: 2 }}
-                  >
-                    {!muted ? <VolumeUpIcon /> : <VolumeOffIcon />}
-                  </NetflixIconButton>
-                )}
-              </Stack>
+                        color: "black",
+                        px: 2,
+                        py: 1,
+                        borderRadius: "4px",
+                        fontWeight: 700,
+                        textTransform: "none",
+                        transition: "opacity 0.2s ease",
+                        "&:hover": {
+                          bgcolor: "white",
+                          opacity: 0.8,
+                        },
+                      }}
+                    >
+                      <OpenInNewIcon sx={{ mr: 1, fontSize: 20 }} />
+                      <Typography variant="button" sx={{ fontWeight: 700 }}>
+                        View Project
+                      </Typography>
+                    </IconButton>
+                  )}
+                  <Box flexGrow={1} />
+                  {item.videoUrl && (
+                    <NetflixIconButton
+                      size="large"
+                      onClick={() => handleMute(muted)}
+                      sx={{ zIndex: 2 }}
+                    >
+                      {!muted ? <VolumeUpIcon /> : <VolumeOffIcon />}
+                    </NetflixIconButton>
+                  )}
+                </Stack>
+              </Box>
             </Box>
           </Box>
 

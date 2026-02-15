@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -17,6 +18,8 @@ import { APP_BAR_HEIGHT } from "src/constant";
 import Logo from "../Logo";
 import SearchBox from "../SearchBox";
 import NetflixNavigationLink from "../NetflixNavigationLink";
+import MotionContainer from "../animate/MotionContainer";
+import { varFadeIn } from "../animate/variants/fade/FadeIn";
 
 const pages = [
   { label: "View Projects", path: "/projects" },
@@ -26,6 +29,7 @@ const pages = [
 const MainHeader = () => {
   const navigate = useNavigate();
   const isOffset = useOffSetTop(68);
+  const [hoveredPage, setHoveredPage] = React.useState<string | null>(null);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -145,18 +149,45 @@ const MainHeader = () => {
           sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, ml: 3 }}
         >
           {pages.map((page) => (
-            <NetflixNavigationLink
-              to={page.path}
-              variant="subtitle1"
+            <Box
               key={page.label}
-              sx={{
-                fontSize: "0.875rem",
-                fontWeight: 500,
-                letterSpacing: "0.02em",
-              }}
+              onMouseEnter={() => setHoveredPage(page.label)}
+              onMouseLeave={() => setHoveredPage(null)}
+              sx={{ position: "relative" }}
             >
-              {page.label}
-            </NetflixNavigationLink>
+              <NetflixNavigationLink
+                to={page.path}
+                variant="subtitle1"
+                sx={{
+                  fontSize: "0.875rem",
+                  fontWeight: 500,
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {page.label}
+              </NetflixNavigationLink>
+              <MotionContainer
+                open={hoveredPage === page.label}
+                initial="initial"
+                sx={{
+                  position: "absolute",
+                  bottom: -4,
+                  left: 0,
+                  right: 0,
+                  height: "2px",
+                  bgcolor: "primary.main",
+                }}
+              >
+                <motion.div
+                  variants={varFadeIn}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "#E50914",
+                  }}
+                />
+              </MotionContainer>
+            </Box>
           ))}
         </Stack>
 

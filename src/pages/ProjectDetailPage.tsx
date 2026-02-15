@@ -40,6 +40,7 @@ export function Component() {
   });
 
   const [playerInitialized, setPlayerInitialized] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   const windowSize = useWindowSize();
 
@@ -189,6 +190,10 @@ export function Component() {
     navigate("/browse");
   };
 
+  const handleVideoError = () => {
+    setVideoError(true);
+  };
+
   if (videoJsOptions && videoJsOptions.width) {
     return (
       <Box
@@ -196,7 +201,11 @@ export function Component() {
           position: "relative",
         }}
       >
-        <VideoJSPlayer options={videoJsOptions} onReady={handlePlayerReady} />
+        <VideoJSPlayer 
+          options={videoJsOptions} 
+          onReady={handlePlayerReady}
+          onError={handleVideoError}
+        />
         {playerRef.current && playerInitialized && (
           <Box
             sx={{

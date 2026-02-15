@@ -49,11 +49,18 @@ const StyledSlider = styled(Slider)(
 
 interface SlideItemProps {
   item: PortfolioItem;
+  index: number;
 }
 
-function SlideItem({ item }: SlideItemProps) {
+function SlideItem({ item, index }: SlideItemProps) {
   return (
-    <Box sx={{ pr: { xs: 0.5, sm: 1 } }}>
+    <Box
+      component={motion.div}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      sx={{ pr: { xs: 0.5, sm: 1 } }}
+    >
       <PortfolioCard item={item} />
     </Box>
   );
@@ -135,7 +142,7 @@ export default function SliderRow({ category }: SliderRowProps) {
   };
 
   return (
-    <Box sx={{ overflow: "hidden", height: "100%", zIndex: 1, mb: { xs: 3, sm: 4, md: 5 } }}>
+    <Box sx={{ overflow: "visible", height: "100%", zIndex: 1, mb: { xs: 3, sm: 4, md: 5 }, pb: 2 }}>
       {category.items.length > 0 && (
         <>
           <Stack
@@ -195,8 +202,8 @@ export default function SliderRow({ category }: SliderRowProps) {
               >
                 {category.items
                   .filter((item) => !!item.image)
-                  .map((item) => (
-                    <SlideItem key={item.id} item={item} />
+                  .map((item, index) => (
+                    <SlideItem key={item.id} item={item} index={index} />
                   ))}
               </StyledSlider>
             </CustomNavigation>

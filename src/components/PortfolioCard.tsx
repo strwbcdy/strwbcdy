@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { PortfolioItem } from "src/types/Portfolio";
-import { usePortal } from "src/providers/PortalProvider";
+// import { usePortal } from "src/providers/PortalProvider";
 import { useDetailModal } from "src/providers/DetailModalProvider";
 import { getAssetPath } from "src/utils/assetPath"
 import PortfolioCardPure from "./PortfolioCardPure";
@@ -10,17 +10,17 @@ interface PortfolioCardProps {
 }
 
 export default function PortfolioCard({ item }: PortfolioCardProps) {
-  const setPortal = usePortal();
+  // const setPortal = usePortal();
   const { setDetailType } = useDetailModal();
   const elementRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  useEffect(() => {
-    if (isHovered) {
-      setPortal(elementRef.current, item);
-    }
-  }, [isHovered, item, setPortal]);
+  // useEffect(() => {
+  //   if (isHovered) {
+  //     setPortal(elementRef.current, item);
+  //   }
+  // }, [isHovered, item, setPortal]);
 
   const handleClick = () => {
     setDetailType({ portfolioItem: item, id: item.id });

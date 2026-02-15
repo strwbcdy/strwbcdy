@@ -2,7 +2,7 @@ import { Outlet, useLocation, useNavigation } from "react-router-dom";
 import Box from "@mui/material/Box";
 
 import DetailModal from "src/components/DetailModal";
-import ItemPortalContainer from "src/components/ItemPortalContainer";
+// import ItemPortalContainer from "src/components/ItemPortalContainer";
 import DetailModalProvider from "src/providers/DetailModalProvider";
 import PortalProvider from "src/providers/PortalProvider";
 import { MAIN_PATH } from "src/constant";
@@ -34,7 +34,7 @@ export default function MainLayout() {
         <DetailModal />
         <PortalProvider>
           <Outlet />
-          <ItemPortalContainer />
+          {/* <ItemPortalContainer /> */}
         </PortalProvider>
       </DetailModalProvider>
       {location.pathname !== `/${MAIN_PATH.detail}` && !isSelectProfilePage && <Footer />}

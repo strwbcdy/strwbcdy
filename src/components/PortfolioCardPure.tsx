@@ -1,7 +1,6 @@
 import { PureComponent, ForwardedRef, forwardRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
 
 type PortfolioCardPureType = {
   src: string;
@@ -20,12 +19,12 @@ class PortfolioCardPure extends PureComponent<PortfolioCardPureType> {
     isHovered: false,
   };
 
-  handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+  handleMouseEnter = () => {
     this.setState({ isHovered: true });
     this.props.handleHover(true);
   };
 
-  handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+  handleMouseLeave = () => {
     this.setState({ isHovered: false });
     this.props.handleHover(false);
   };
@@ -40,86 +39,101 @@ class PortfolioCardPure extends PureComponent<PortfolioCardPureType> {
 
     return (
       <Box
-        ref={this.props.innerRef}
         sx={{
           position: "relative",
           width: "100%",
-          paddingTop: "calc(9 / 16 * 100%)",
-          borderRadius: "4px",
-          overflow: "hidden",
           cursor: "pointer",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease, z-index 0s",
-          zIndex: isHovered ? 10 : 1,
-          transform: isHovered ? "scale(1.1)" : "scale(1)",
-          transformOrigin: transformOrigin,
-          boxShadow: isHovered ? "0 8px 16px rgba(0, 0, 0, 0.6)" : "none",
         }}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
         onClick={this.props.handleClick}
       >
         <Box
-          component="img"
-          src={this.props.src}
-          alt={this.props.title}
-          onError={this.props.onImageError}
+          ref={this.props.innerRef}
           sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
+            position: "relative",
             width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            borderRadius: "4px",
-          }}
-        />
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            background:
-              "linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 40%, transparent 100%)",
-            padding: "16px 12px 12px",
-            borderBottomLeftRadius: "4px",
-            borderBottomRightRadius: "4px",
-            opacity: isHovered ? 1 : 0,
-            transition: "opacity 0.3s ease",
-            pointerEvents: "none",
+            transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+            zIndex: isHovered ? 10 : 1,
+            transform: isHovered ? "scale(1.05)" : "scale(1)",
+            transformOrigin: transformOrigin,
+            "&:hover": {
+              "& .card-overlay": {
+                opacity: 1,
+              },
+            },
           }}
         >
-          <Typography
-            variant="body2"
+          {/* Image Container - Vertical aspect ratio */}
+          <Box
             sx={{
-              color: "white",
-              fontWeight: 700,
-              fontSize: "0.9rem",
-              mb: 1,
-              lineHeight: 1.2,
+              position: "relative",
+              width: "100%",
+              paddingTop: "150%", // 2:3 aspect ratio for vertical cards
+              borderRadius: "4px",
+              overflow: "hidden",
+              boxShadow: isHovered 
+                ? "0 8px 24px rgba(0, 0, 0, 0.8)" 
+                : "0 2px 8px rgba(0, 0, 0, 0.4)",
+              transition: "box-shadow 0.3s ease",
             }}
           >
-            {this.props.title}
-          </Typography>
-          <Box sx={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-            {this.props.tags.slice(0, 2).map((tag, index) => (
-              <Chip
-                key={index}
-                label={tag}
-                size="small"
-                sx={{
-                  height: "22px",
-                  fontSize: "0.7rem",
-                  bgcolor: "rgba(255, 255, 255, 0.25)",
-                  color: "white",
-                  fontWeight: 600,
-                  border: "1px solid rgba(255, 255, 255, 0.3)",
-                  "& .MuiChip-label": {
-                    padding: "0 8px",
-                  },
-                }}
-              />
-            ))}
+            <Box
+              component="img"
+              src={this.props.src}
+              alt={this.props.title}
+              onError={this.props.onImageError}
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+            
+            {/* Gradient overlay for better text readability */}
+            <Box
+              className="card-overlay"
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: "50%",
+                background:
+                  "linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 50%, transparent 100%)",
+                opacity: isHovered ? 1 : 0.7,
+                transition: "opacity 0.3s ease",
+                pointerEvents: "none",
+              }}
+            />
+          </Box>
+
+          {/* Title - Always visible */}
+          <Box
+            sx={{
+              mt: 1.5,
+              px: 0.5,
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                color: "white",
+                fontWeight: 600,
+                fontSize: "0.875rem",
+                lineHeight: 1.3,
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {this.props.title}
+            </Typography>
           </Box>
         </Box>
       </Box>

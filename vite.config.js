@@ -15,6 +15,20 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split vendor libraries into separate chunks
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'mui-vendor': ['@mui/material', '@mui/icons-material'],
+          'animation-vendor': ['framer-motion'],
+          'video-vendor': ['video.js', 'videojs-youtube'],
+          'slider-vendor': ['react-slick', 'slick-carousel'],
+        },
+      },
+    },
+    // Increase chunk size warning limit to 1000kb
+    chunkSizeWarningLimit: 1000,
   },
   
   server: {
