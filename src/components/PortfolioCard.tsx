@@ -26,6 +26,13 @@ export default function PortfolioCard({ item }: PortfolioCardProps) {
     setDetailType({ portfolioItem: item, id: item.id });
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+    if (process.env.NODE_ENV === 'development') {
+      console.error(`Failed to load image: ${item.image}`);
+    }
+  };
+
   const imageSrc = imageError ? getAssetPath("/images/placeholder.svg") : item.image;
 
   return (
@@ -36,7 +43,7 @@ export default function PortfolioCard({ item }: PortfolioCardProps) {
       src={imageSrc}
       title={item.title}
       tags={item.tags}
-      onImageError={() => setImageError(true)}
+      onImageError={handleImageError}
     />
   );
 }

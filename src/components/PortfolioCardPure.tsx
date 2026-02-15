@@ -11,51 +11,67 @@ type PortfolioCardPureType = {
   handleHover: (value: boolean) => void;
   handleClick?: () => void;
   onImageError: () => void;
+  isFirst?: boolean;
+  isLast?: boolean;
 };
 
 class PortfolioCardPure extends PureComponent<PortfolioCardPureType> {
+  state = {
+    isHovered: false,
+  };
+
+  handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    this.setState({ isHovered: true });
+    this.props.handleHover(true);
+  };
+
+  handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    this.setState({ isHovered: false });
+    this.props.handleHover(false);
+  };
+
   render() {
+    const { isFirst, isLast } = this.props;
+    const { isHovered } = this.state;
+    
+    let transformOrigin = "center center";
+    if (isFirst) transformOrigin = "left center";
+    if (isLast) transformOrigin = "right center";
+
     return (
-      <div
+      <Box
         ref={this.props.innerRef}
-        style={{
-          zIndex: 9,
-          cursor: "pointer",
-          borderRadius: "4px",
-          width: "100%",
+        sx={{
           position: "relative",
+          width: "100%",
           paddingTop: "calc(9 / 16 * 100%)",
-          transition: "transform 0.3s ease",
+          borderRadius: "4px",
           overflow: "hidden",
+          cursor: "pointer",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease, z-index 0s",
+          zIndex: isHovered ? 10 : 1,
+          transform: isHovered ? "scale(1.1)" : "scale(1)",
+          transformOrigin: transformOrigin,
+          boxShadow: isHovered ? "0 8px 16px rgba(0, 0, 0, 0.6)" : "none",
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "scale(1.08)";
-          e.currentTarget.style.zIndex = "10";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "scale(1)";
-          e.currentTarget.style.zIndex = "9";
-        }}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+        onClick={this.props.handleClick}
       >
-        <img
+        <Box
+          component="img"
           src={this.props.src}
           alt={this.props.title}
-          style={{
-            top: 0,
-            height: "100%",
-            width: "100%",
-            objectFit: "cover",
+          onError={this.props.onImageError}
+          sx={{
             position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
             borderRadius: "4px",
           }}
-          onClick={this.props.handleClick}
-          onPointerEnter={() => {
-            this.props.handleHover(true);
-          }}
-          onPointerLeave={() => {
-            this.props.handleHover(false);
-          }}
-          onError={this.props.onImageError}
         />
         <Box
           sx={{
@@ -63,17 +79,15 @@ class PortfolioCardPure extends PureComponent<PortfolioCardPureType> {
             bottom: 0,
             left: 0,
             right: 0,
-            background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, transparent 100%)",
+            background:
+              "linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 40%, transparent 100%)",
             padding: "16px 12px 12px",
             borderBottomLeftRadius: "4px",
             borderBottomRightRadius: "4px",
-            opacity: 0,
+            opacity: isHovered ? 1 : 0,
             transition: "opacity 0.3s ease",
-            "&:hover": {
-              opacity: 1,
-            },
+            pointerEvents: "none",
           }}
-          className="card-overlay"
         >
           <Typography
             variant="body2"
@@ -81,7 +95,7 @@ class PortfolioCardPure extends PureComponent<PortfolioCardPureType> {
               color: "white",
               fontWeight: 700,
               fontSize: "0.9rem",
-              marginBottom: "8px",
+              mb: 1,
               lineHeight: 1.2,
             }}
           >
@@ -96,10 +110,10 @@ class PortfolioCardPure extends PureComponent<PortfolioCardPureType> {
                 sx={{
                   height: "22px",
                   fontSize: "0.7rem",
-                  backgroundColor: "rgba(255,255,255,0.25)",
+                  bgcolor: "rgba(255, 255, 255, 0.25)",
                   color: "white",
                   fontWeight: 600,
-                  border: "1px solid rgba(255,255,255,0.3)",
+                  border: "1px solid rgba(255, 255, 255, 0.3)",
                   "& .MuiChip-label": {
                     padding: "0 8px",
                   },
@@ -108,7 +122,7 @@ class PortfolioCardPure extends PureComponent<PortfolioCardPureType> {
             ))}
           </Box>
         </Box>
-      </div>
+      </Box>
     );
   }
 }

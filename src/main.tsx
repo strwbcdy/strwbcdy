@@ -5,10 +5,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 import store from "./store";
-import palette from "./theme/palette";
+import netflixTheme from "./theme/netflixTheme";
 import router from "./routes";
 import MainLoadingScreen from "./components/MainLoadingScreen";
 
@@ -18,7 +19,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <React.StrictMode>
-      <ThemeProvider theme={createTheme({ palette })}>
+      <ThemeProvider theme={netflixTheme}>
+        <CssBaseline />
         <RouterProvider
           router={router}
           fallbackElement={<MainLoadingScreen />}

@@ -27,7 +27,7 @@ const Transition = forwardRef(function Transition(
   },
   ref: React.Ref<unknown>
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} timeout={400} />;
 });
 
 export default function DetailModal() {
@@ -62,26 +62,35 @@ export default function DetailModal() {
         open={!!detail.portfolioItem}
         id="detail_dialog"
         TransitionComponent={Transition}
+        PaperProps={{
+          sx: {
+            maxWidth: "900px",
+            bgcolor: "#181818",
+            borderRadius: "8px",
+            overflow: "hidden",
+          },
+        }}
       >
         <DialogContent sx={{ p: 0, bgcolor: "#181818" }}>
           <Box
             sx={{
-              top: 0,
-              left: 0,
-              right: 0,
               position: "relative",
-              mb: 3,
+              width: "100%",
+              paddingTop: "calc(9 / 16 * 100%)",
+              bgcolor: "black",
             }}
           >
-            <Box
-              sx={{
-                width: "100%",
-                position: "relative",
-                height: "calc(9 / 16 * 100%)",
-              }}
-            >
-              {item.videoUrl ? (
-                <>
+            {item.videoUrl ? (
+              <>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
                   <VideoJSPlayer
                     options={{
                       loop: true,
@@ -100,164 +109,200 @@ export default function DetailModal() {
                     }}
                     onReady={handleReady}
                   />
-                  <Box
-                    sx={{
-                      background: `linear-gradient(77deg,rgba(0,0,0,.6),transparent 85%)`,
-                      top: 0,
-                      left: 0,
-                      bottom: 0,
-                      right: "26.09%",
-                      opacity: 1,
-                      position: "absolute",
-                      transition: "opacity .5s",
-                    }}
-                  />
-                </>
-              ) : (
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: 0,
-                    paddingBottom: "56.25%",
-                    position: "relative",
-                    backgroundImage: `url(${item.image})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                  }}
-                />
-              )}
-              
+                </Box>
+              </>
+            ) : (
               <Box
+                component="img"
+                src={item.image}
+                alt={item.title}
                 sx={{
-                  backgroundColor: "transparent",
-                  backgroundImage:
-                    "linear-gradient(180deg,hsla(0,0%,8%,0) 0,hsla(0,0%,8%,.15) 15%,hsla(0,0%,8%,.35) 29%,hsla(0,0%,8%,.58) 44%,#141414 68%,#141414)",
-                  backgroundRepeat: "repeat-x",
-                  backgroundPosition: "0px top",
-                  backgroundSize: "100% 100%",
-                  bottom: 0,
                   position: "absolute",
-                  height: "14.7vw",
-                  opacity: 1,
-                  top: "auto",
+                  top: 0,
+                  left: 0,
                   width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
                 }}
               />
-              <IconButton
-                onClick={handleClose}
-                sx={{
-                  top: 15,
-                  right: 15,
-                  position: "absolute",
-                  bgcolor: "#181818",
-                  width: { xs: 22, sm: 40 },
-                  height: { xs: 22, sm: 40 },
-                  "&:hover": {
-                    bgcolor: "primary.main",
-                  },
-                }}
-              >
-                <CloseIcon
-                  sx={{ color: "white", fontSize: { xs: 14, sm: 22 } }}
-                />
-              </IconButton>
-              <Box
-                sx={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  bottom: 16,
-                  px: { xs: 2, sm: 3, md: 5 },
-                }}
-              >
-                <MaxLineTypography variant="h4" maxLine={1} sx={{ mb: 2 }}>
-                  {item.title}
-                </MaxLineTypography>
-                <Stack direction="row" spacing={2} sx={{ mb: 3, alignItems: "center" }}>
-                  {item.link && (
-                    <IconButton
-                      component="a"
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      sx={{
-                        bgcolor: "white",
-                        color: "black",
-                        px: 2,
-                        py: 1,
-                        borderRadius: 1,
-                        "&:hover": {
-                          bgcolor: "rgba(255,255,255,0.8)",
-                        },
-                      }}
-                    >
-                      <OpenInNewIcon sx={{ mr: 1, fontSize: 20 }} />
-                      <Typography variant="button">View Project</Typography>
-                    </IconButton>
-                  )}
-                  <Box flexGrow={1} />
-                  {item.videoUrl && (
-                    <NetflixIconButton
-                      size="large"
-                      onClick={() => handleMute(muted)}
-                      sx={{ zIndex: 2 }}
-                    >
-                      {!muted ? <VolumeUpIcon /> : <VolumeOffIcon />}
-                    </NetflixIconButton>
-                  )}
-                </Stack>
+            )}
+            
+            {/* Bottom Gradient Overlay */}
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                height: "30%",
+                background: "linear-gradient(to top, #181818 0%, rgba(24, 24, 24, 0.8) 20%, transparent 100%)",
+                pointerEvents: "none",
+              }}
+            />
 
-                <Container
-                  sx={{
-                    p: "0px !important",
-                  }}
-                >
-                  <Grid container spacing={5} alignItems="flex-start">
-                    <Grid item xs={12} sm={8}>
-                      <MaxLineTypography
-                        maxLine={5}
-                        variant="body1"
-                        sx={{ mb: 2 }}
-                      >
-                        {item.description}
-                      </MaxLineTypography>
-                      
-                      {item.company && (
-                        <Typography variant="body2" sx={{ mb: 1, color: "text.secondary" }}>
-                          <strong>Company:</strong> {item.company}
-                        </Typography>
-                      )}
-                      
-                      {item.date && (
-                        <Typography variant="body2" sx={{ mb: 1, color: "text.secondary" }}>
-                          <strong>Date:</strong> {item.date}
-                        </Typography>
-                      )}
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                      <Typography variant="body2" sx={{ mb: 1, fontWeight: "bold" }}>
-                        Technologies:
-                      </Typography>
-                      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                        {item.tags.map((tag: string, index: number) => (
-                          <Chip
-                            key={index}
-                            label={tag}
-                            size="small"
-                            sx={{
-                              bgcolor: "rgba(255,255,255,0.1)",
-                              color: "white",
-                              mb: 1,
-                            }}
-                          />
-                        ))}
-                      </Stack>
-                    </Grid>
-                  </Grid>
-                </Container>
-              </Box>
+            {/* Close Button */}
+            <IconButton
+              onClick={handleClose}
+              sx={{
+                position: "absolute",
+                top: 15,
+                right: 15,
+                bgcolor: "#181818",
+                width: { xs: 32, sm: 40 },
+                height: { xs: 32, sm: 40 },
+                transition: "background-color 0.2s ease",
+                "&:hover": {
+                  bgcolor: "#E50914",
+                },
+              }}
+            >
+              <CloseIcon
+                sx={{ color: "white", fontSize: { xs: 18, sm: 24 } }}
+              />
+            </IconButton>
+
+            {/* Content Container */}
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 16,
+                left: 0,
+                right: 0,
+                px: { xs: 2, sm: 3, md: 5 },
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  fontSize: "2rem",
+                  fontWeight: 700,
+                  color: "white",
+                  mb: 2,
+                }}
+              >
+                {item.title}
+              </Typography>
+
+              <Stack direction="row" spacing={2} sx={{ mb: 3, alignItems: "center" }}>
+                {item.link && (
+                  <IconButton
+                    component="a"
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      bgcolor: "white",
+                      color: "black",
+                      px: 2,
+                      py: 1,
+                      borderRadius: "4px",
+                      fontWeight: 700,
+                      textTransform: "none",
+                      transition: "opacity 0.2s ease",
+                      "&:hover": {
+                        bgcolor: "white",
+                        opacity: 0.8,
+                      },
+                    }}
+                  >
+                    <OpenInNewIcon sx={{ mr: 1, fontSize: 20 }} />
+                    <Typography variant="button" sx={{ fontWeight: 700 }}>
+                      View Project
+                    </Typography>
+                  </IconButton>
+                )}
+                <Box flexGrow={1} />
+                {item.videoUrl && (
+                  <NetflixIconButton
+                    size="large"
+                    onClick={() => handleMute(muted)}
+                    sx={{ zIndex: 2 }}
+                  >
+                    {!muted ? <VolumeUpIcon /> : <VolumeOffIcon />}
+                  </NetflixIconButton>
+                )}
+              </Stack>
             </Box>
           </Box>
+
+          {/* Content Area Below Featured Media */}
+          <Container
+            sx={{
+              p: { xs: 2, sm: 3, md: 5 },
+              pt: 3,
+            }}
+          >
+            <Grid container spacing={5} alignItems="flex-start">
+              <Grid item xs={12} sm={8}>
+                <MaxLineTypography
+                  maxLine={5}
+                  variant="body1"
+                  sx={{
+                    fontSize: "1rem",
+                    color: "white",
+                    mb: 2,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {item.description}
+                </MaxLineTypography>
+                
+                {item.company && (
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: "0.875rem",
+                      color: "text.secondary",
+                      mb: 1,
+                    }}
+                  >
+                    <strong>Company:</strong> {item.company}
+                  </Typography>
+                )}
+                
+                {item.date && (
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: "0.875rem",
+                      color: "text.secondary",
+                      mb: 1,
+                    }}
+                  >
+                    <strong>Date:</strong> {item.date}
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    mb: 1,
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
+                >
+                  Technologies:
+                </Typography>
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                  {item.tags.map((tag: string, index: number) => (
+                    <Chip
+                      key={index}
+                      label={tag}
+                      size="small"
+                      sx={{
+                        bgcolor: "rgba(255, 255, 255, 0.1)",
+                        color: "white",
+                        fontSize: "0.75rem",
+                        height: "24px",
+                        mb: 1,
+                      }}
+                    />
+                  ))}
+                </Stack>
+              </Grid>
+            </Grid>
+          </Container>
         </DialogContent>
       </Dialog>
     );

@@ -25,7 +25,7 @@ const pages = [
 
 const MainHeader = () => {
   const navigate = useNavigate();
-  const isOffset = useOffSetTop(APP_BAR_HEIGHT);
+  const isOffset = useOffSetTop(68);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -61,31 +61,24 @@ const MainHeader = () => {
         top: 0,
         left: 0,
         right: 0,
-        width: "100%",
-        maxwidth: "100vw",
-        height: APP_BAR_HEIGHT,
+        height: "68px",
+        zIndex: 1100,
         backgroundImage: "none",
         bgcolor: isOffset ? "rgba(20, 20, 20, 0.95)" : "transparent",
         backdropFilter: isOffset ? "blur(10px)" : "none",
         background: isOffset 
           ? "rgba(20, 20, 20, 0.95)" 
-          : "linear-gradient(180deg, rgba(0,0,0,0.7) 10%, transparent)",
-        boxSizing: "border-box",
-        margin: 0,
-        padding: 0,
-        overflow: "hidden",
+          : "linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%, transparent)",
         transition: "background-color 0.3s ease, backdrop-filter 0.3s ease",
-        boxShadow: 0,
+        boxShadow: "none",
       }}
     >
       <Toolbar 
         disableGutters 
         sx={{ 
-          minHeight: APP_BAR_HEIGHT,
-          height: APP_BAR_HEIGHT,
-          px: { xs: "15px", sm: "30px", md: "60px" },
-          margin: 0,
-          boxSizing: "border-box",
+          minHeight: "68px",
+          height: "68px",
+          px: { xs: "30px", sm: "60px" },
         }}
       >
         <Logo sx={{ mr: { xs: 1, sm: 2, md: 4 } }} />
@@ -93,7 +86,7 @@ const MainHeader = () => {
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
           <IconButton
             size="large"
-            aria-label="account of current user"
+            aria-label="navigation menu"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleOpenNavMenu}
@@ -118,6 +111,12 @@ const MainHeader = () => {
             sx={{
               display: { xs: "block", md: "none" },
             }}
+            PaperProps={{
+              sx: {
+                bgcolor: "rgba(20, 20, 20, 0.95)",
+                backdropFilter: "blur(10px)",
+              },
+            }}
           >
             {pages.map((page) => (
               <MenuItem 
@@ -125,6 +124,13 @@ const MainHeader = () => {
                 onClick={() => {
                   handleCloseNavMenu();
                   navigate(page.path);
+                }}
+                sx={{
+                  color: "rgba(229, 229, 229, 0.7)",
+                  "&:hover": {
+                    color: "white",
+                    bgcolor: "rgba(255, 255, 255, 0.1)",
+                  },
                 }}
               >
                 <Typography textAlign="center">{page.label}</Typography>
@@ -181,14 +187,47 @@ const MainHeader = () => {
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
+            PaperProps={{
+              sx: {
+                bgcolor: "rgba(20, 20, 20, 0.95)",
+                backdropFilter: "blur(10px)",
+              },
+            }}
           >
-            <MenuItem onClick={handleAccountClick}>
+            <MenuItem 
+              onClick={handleAccountClick}
+              sx={{
+                color: "rgba(229, 229, 229, 0.7)",
+                "&:hover": {
+                  color: "white",
+                  bgcolor: "rgba(255, 255, 255, 0.1)",
+                },
+              }}
+            >
               <Typography textAlign="center">Switch Profile</Typography>
             </MenuItem>
-            <MenuItem onClick={handleCloseUserMenu}>
+            <MenuItem 
+              onClick={handleCloseUserMenu}
+              sx={{
+                color: "rgba(229, 229, 229, 0.7)",
+                "&:hover": {
+                  color: "white",
+                  bgcolor: "rgba(255, 255, 255, 0.1)",
+                },
+              }}
+            >
               <Typography textAlign="center">Account Settings</Typography>
             </MenuItem>
-            <MenuItem onClick={handleCloseUserMenu}>
+            <MenuItem 
+              onClick={handleCloseUserMenu}
+              sx={{
+                color: "rgba(229, 229, 229, 0.7)",
+                "&:hover": {
+                  color: "white",
+                  bgcolor: "rgba(255, 255, 255, 0.1)",
+                },
+              }}
+            >
               <Typography textAlign="center">Sign Out</Typography>
             </MenuItem>
           </Menu>

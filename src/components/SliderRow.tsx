@@ -135,7 +135,7 @@ export default function SliderRow({ category }: SliderRowProps) {
   };
 
   return (
-    <Box sx={{ overflow: "hidden", height: "100%", zIndex: 1 }}>
+    <Box sx={{ overflow: "hidden", height: "100%", zIndex: 1, mb: { xs: 3, sm: 4, md: 5 } }}>
       {category.items.length > 0 && (
         <>
           <Stack
@@ -149,7 +149,13 @@ export default function SliderRow({ category }: SliderRowProps) {
               to={`/category/${category.id}`}
               sx={{
                 display: "inline-block",
+                fontSize: "1.5rem",
                 fontWeight: 700,
+                color: "white",
+                transition: "color 0.2s ease",
+                "&:hover": {
+                  color: "rgba(255, 255, 255, 0.8)",
+                },
               }}
               onMouseOver={() => {
                 setShowExplore(true);
